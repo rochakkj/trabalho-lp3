@@ -1,50 +1,56 @@
 import csv
 
 
-def salvar_dicionario_em_arquivo_sala(a: dict):
+def adicionar_dicionario_sala(dic: dict):
 
-    with open("salas.csv", "a") as arquivo:
-        lista_valores: list[str] = []
+   with open("salas.csv", "a") as arquivo:
+            lista_valores: list[str] = []
                     
-        for key in a:
-            value = a[key]
-                    
-            lista_valores.append(fr'"{key}:{value}"')
+            for key in dic:
+                value = dic[key]
                 
-        sala = ','.join(lista_valores) + '\n'
+                if type(value) == str:
+                    value = value.replace(',', ';')
+                    
+                lista_valores.append(fr'"{key}:{value}"')
+                
+            linha_produto = ','.join(lista_valores) + '\n'
             
-        arquivo.write(sala)
+            arquivo.write(linha_produto)
+        
 
 
-def salvar_dicionario_em_arquivo_reserva(a: dict):
+def adicionar_dicionario_reserva(reserva: dict):
 
     with open("reservas.csv", "a") as arquivo:
-        lista_valores: list[str] = []
+        lista: list[str] = []
                     
-        for key in a:
-            value = a[key]
-                    
-            lista_valores.append(fr'"{key}:{value}"')
-                
-        sala = ','.join(lista_valores) + '\n'
+        for key in reserva:
+            value = reserva[key]
             
-        arquivo.write(sala)
+                    
+            lista.append(fr'"{key}:{value}"')
+                
+        string = ','.join(lista) + '\n'
+            
+        arquivo.write(string)
 
-def criar_sala (codigo, capacidade, ativa, tipo, descricao):
-    return{
+def criar_sala (tipo, codigo, capacidade, descricao: dict):
+    return  {
+        "tipo": tipo,
         "codigo": codigo,
         "capacidade": capacidade,
-        "ativa": ativa,
-        "tipo": tipo,
-        "descricao": descricao
+        "descricao": descricao,
+        "ativa": True
 
     }
+
 
 
 def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
     return {
         "codigo": codigo,
-        "sala": criar_sala(1, 25, True, "lab", "é um lab"),
+        "sala": sala,
         "data_e_hora_de_inicio": data_hora_inicio,
         "data_e_hora_do_fim": data_hora_fim,
         "ativa": True
@@ -54,8 +60,3 @@ def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
 # def criar_sala(codigo, capacidade, ativa, tipo, descricao):
 #     sala = sala_modelo(codigo, capacidade, ativa, tipo, descricao)
 #     return sala
-
-
-
-
-
