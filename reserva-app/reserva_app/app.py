@@ -29,25 +29,16 @@ def cadastrar_sala_post():
     return render_template("cadastrar-sala.html")
 
 
-@app.route("/cadastrar-sala", methods=['GET'])
-def cadastrar_sala_get():
-    #codigo, capacidade, tipo, descricao
-    adicionar_dicionario_sala(criar_sala(request.form['tipo'], request.form['codigo'], request.form['capacidade'], request.form['descricao']))
-
-
-    return render_template("cadastrar-sala.html")
-
-
 @app.route("/reservar-sala")
 def reservar_sala():
 
-    return render_template("reservar-sala.html")
+    return render_template("reservar-sala.html", salas = exibe_dicionario_sala())
 
 
 @app.route("/reservar-sala", methods=['POST'])
 def reservar_sala_post():
     #codigo, sala, data_hora_inicio, data_hora_fim
-    adicionar_dicionario_reserva(criar_reserva(request.form['codigo'], request.form['sala'], request.form['data_hora_inicio'], request.form['data_hora_fim']))
+    adicionar_dicionario_reserva(criar_reserva(gerar_codigo_unico(exibe_dicionario_reserva()), request.form['sala'], request.form['inicio'], request.form['fim']))
     return render_template("reservar-sala.html")
 
 

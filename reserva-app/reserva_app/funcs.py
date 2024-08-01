@@ -1,39 +1,80 @@
 import csv
+from random import randint
+
+def gerar_codigo_unico(lista_eventos):
+  if not lista_eventos:  # Se a lista estiver vazia
+      return randint(1000, 9999)
+  while True:
+    codigo_aleatorio = randint(1000, 9999)
+    codigos_existentes = {evento['codigo'] for evento in lista_eventos}
+    if codigo_aleatorio not in codigos_existentes:
+      return codigo_aleatorio
+    
+def dividir_lista(lista):
+
+
+  nova_lista = []
+  for item in lista:
+    chave, valor = item.split(':')
+    nova_lista.extend([chave, valor])
+  return nova_lista
+
+def dividir_lista_reserva(lista):
+  """
+  Divide uma lista de strings no formato "chave:valor" em uma lista única
+  contendo alternadamente as chaves e os valores.
+  """
+
+  nova_lista = []
+  for item in lista:
+      if item.startswith('data_e_hora_de_inicio:'):
+        chave, valor = item.split(':', 1)  # Divide apenas na primeira ocorrência de ':'
+        nova_lista.extend([chave, valor])
+      elif item.startswith('data_e_hora_do_fim:'):
+        chave, valor = item.split(':', 1)  # Divide apenas na primeira ocorrência de ':'
+        nova_lista.extend([chave, valor])
+      else:
+          chave, valor = item.split(':')
+          nova_lista.extend([chave, valor])
+  return nova_lista
+
 
 
 def adicionar_dicionario_sala(dic: dict):
 
    with open("salas.csv", "a") as arquivo:
-            lista_valores: list[str] = []
+            lista: list[str] = []
                     
-            for key in dic:
-                value = dic[key]
+            for i in dic:
+                a = dic[i]
                 
-                if type(value) == str:
-                    value = value.replace(',', ';')
+                if type(a) == str:
+                    a = a.replace(',', ';')
                     
-                lista_valores.append(fr'"{key}:{value}"')
+                lista.append(fr'"{i}:{a}"')
                 
-            linha_produto = ','.join(lista_valores) + '\n'
+            linha = ','.join(lista) + '\n'
             
-            arquivo.write(linha_produto)
+            arquivo.write(linha)
         
 
-
-def adicionar_dicionario_reserva(reserva: dict):
+def adicionar_dicionario_reserva(dic: dict):
 
     with open("reservas.csv", "a") as arquivo:
-        lista: list[str] = []
+            lista: list[str] = []
                     
-        for key in reserva:
-            value = reserva[key]
-            
-                    
-            lista.append(fr'"{key}:{value}"')
+            for i in dic:
+                a = dic[i]
                 
-        string = ','.join(lista) + '\n'
+                if type(a) == str:
+                    a = a.replace(',', ';')
+                    
+                lista.append(fr'"{i}:{a}"')
+                
+            linha = ','.join(lista) + '\n'
             
-        arquivo.write(string)
+            arquivo.write(linha)
+
 
 def criar_sala (codigo, tipo, capacidade, descricao: dict):
     return  {
@@ -46,7 +87,6 @@ def criar_sala (codigo, tipo, capacidade, descricao: dict):
     }
 
 
-
 def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
     return {
         "codigo": codigo,
@@ -55,23 +95,7 @@ def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
         "data_e_hora_do_fim": data_hora_fim,
         "ativa": True
     }
-def dividir_lista(lista):
-  """
-  Divide uma lista de strings no formato "chave:valor" em uma lista única
-  contendo alternadamente as chaves e os valores.
 
-  Args:
-    lista: A lista de strings a ser dividida.
-
-  Returns:
-    Uma nova lista com as chaves e valores separados.
-  """
-
-  nova_lista = []
-  for item in lista:
-    chave, valor = item.split(':')
-    nova_lista.extend([chave, valor])
-  return nova_lista
 
 def exibe_dicionario_sala():
     lista_dicts: list[dict] = []
@@ -79,9 +103,24 @@ def exibe_dicionario_sala():
     with open("salas.csv", "r") as arquivo:
 
         csv_reader = csv.reader(arquivo)
-
+        
         for row in csv_reader:
             a = dividir_lista(row)
+            dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
+            dic['ativa'] = dic['ativa'].lower() == 'true'
+            lista_dicts.append(dic)
+            
+    return lista_dicts
+
+def exibe_dicionario_reserva():
+    lista_dicts: list[dict] = []
+        
+    with open("reservas.csv", "r") as arquivo:
+
+        csv_reader = csv.reader(arquivo)
+
+        for row in csv_reader:
+            a = dividir_lista_reserva(row)
             dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
             dic['ativa'] = dic['ativa'].lower() == 'true'
             lista_dicts.append(dic)
