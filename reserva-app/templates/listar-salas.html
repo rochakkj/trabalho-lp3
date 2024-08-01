@@ -1,121 +1,77 @@
-{% extends "base.html"%}
+{% extends "base.html"%} {% block title %}Listar Salas{% endblock %} {% block
+content %}
 
-{% block title  %}Listar Salas{% endblock %}
-
-{% block content %}
-
-  <div class="container">
-    <div class="row mt-4">
-      <div class="col">
-        <h1>Lista de Salas</h1>
-      </div>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <h1>Lista de Salas</h1>
     </div>
-    <div class="row">
-      <div class="col">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Capacidade</th>
-                <th scope="col">Ativa</th>
-                <th scope="col">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Laboratório</td>
-                <td>PCs com intel i5, 8GB de RAM</td>
-                <td>20</td>
-                <td>Sim</td>
-                <td>
-                  <form action="">
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/cadastrar-sala.html">Editar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Desativar</button>
-                    <button class="btn btn-sm btn-dark" type="submit" formaction="/templates/reservas.html">Excluir</button>
-                  </form>
-                </td>
-              </tr>
-              
-              
-            </tbody>
-          </table>
-        </div>
-        
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrição</th>
+              <th scope="col">Capacidade</th>
+              <th scope="col">Ativa</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in salas%}
+            <tr>
+              <td>{{i.codigo}}</td>
+              {% if i['tipo'] == 1 %}
+              <td>Laboratório de Informática</td>
+              {% elif i['tipo'] == 2 %}
+              <td>Laboratório de Química</td>
+              {% elif i['tipo'] == 3 %}
+              <td>Sala de Aula</td>
+              {% else %}
+              <td></td>
+              {% endif %}
+              <td>{{i.descricao}}</td>
+              <td>{{i.capacidade}}</td>
+              {% if i['ativa'] == True %}
+              <td>Ativa</td>
+              {% else %}
+              <td>Desativada</td>
+              {% endif %}
+              <td>
+                <form action="">
+                  <button
+                    class="btn btn-sm btn-dark"
+                    type="submit"
+                    formaction="/cadastrar-sala"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    class="btn btn-sm btn-dark"
+                    type="submit"
+                    formaction="/reservas"
+                  >
+                    Desativar
+                  </button>
+                  <button
+                    class="btn btn-sm btn-dark"
+                    type="submit"
+                    formaction="/reservas"
+                  >
+                    Excluir
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  {% endblock %}
+</div>
+{% endblock %}

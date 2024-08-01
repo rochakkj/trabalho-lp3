@@ -35,10 +35,10 @@ def adicionar_dicionario_reserva(reserva: dict):
             
         arquivo.write(string)
 
-def criar_sala (tipo, codigo, capacidade, descricao: dict):
+def criar_sala (codigo, tipo, capacidade, descricao: dict):
     return  {
-        "tipo": tipo,
         "codigo": codigo,
+        "tipo": tipo,
         "capacidade": capacidade,
         "descricao": descricao,
         "ativa": True
@@ -55,7 +55,43 @@ def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
         "data_e_hora_do_fim": data_hora_fim,
         "ativa": True
     }
+def dividir_lista(lista):
+  """
+  Divide uma lista de strings no formato "chave:valor" em uma lista única
+  contendo alternadamente as chaves e os valores.
 
+  Args:
+    lista: A lista de strings a ser dividida.
+
+  Returns:
+    Uma nova lista com as chaves e valores separados.
+  """
+
+  nova_lista = []
+  for item in lista:
+    chave, valor = item.split(':')
+    nova_lista.extend([chave, valor])
+  return nova_lista
+
+def exibe_dicionario_sala():
+    lista_dicts: list[dict] = []
+        
+    with open("salas.csv", "r") as arquivo:
+
+        csv_reader = csv.reader(arquivo)
+
+        for row in csv_reader:
+            a = dividir_lista(row)
+            dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
+            dic['ativa'] = dic['ativa'].lower() == 'true'
+            lista_dicts.append(dic)
+            
+    return lista_dicts
+        
+
+def exibe_sala(id: int):
+
+    return adicionar_dicionario_sala()
 
 # def criar_sala(codigo, capacidade, ativa, tipo, descricao):
 #     sala = sala_modelo(codigo, capacidade, ativa, tipo, descricao)
