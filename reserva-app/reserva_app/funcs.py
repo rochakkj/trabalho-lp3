@@ -39,12 +39,47 @@ def dividir_lista_reserva(lista):
   return nova_lista
 
 
+def verificar_codigo_unico(lista_dicts, codigo):
+  """Verifica se um código é único em uma lista de dicionários.
+
+  Args:
+    lista_dicts: Uma lista de dicionários.
+    codigo: O código a ser verificado.
+
+  Returns:
+    True se o código for único, False caso contrário.
+  """
+  for dicionario in lista_dicts:
+    a = dicionario['codigo']
+    if  a == codigo:
+      return False
+      
+
+  # Se não encontrou o código em nenhum dicionário, retorna o código
+  return True
+
 
 def adicionar_dicionario_sala(dic: dict):
 
    with open("salas.csv", "a") as arquivo:
             lista: list[str] = []
+                       
+            for i in dic:
+                a = dic[i]  
                     
+                if type(a) == str:
+                    a = a.replace(',', ';')
+                        
+                lista.append(fr'"{i}:{a}"')
+                    
+            linha = ','.join(lista) + '\n'
+                
+            arquivo.write(linha)
+
+def adicionar_dicionario_reserva(dic: dict):
+
+    with open("reservas.csv", "a") as arquivo:
+            lista: list[str] = []
             for i in dic:
                 a = dic[i]
                 
@@ -56,23 +91,23 @@ def adicionar_dicionario_sala(dic: dict):
             linha = ','.join(lista) + '\n'
             
             arquivo.write(linha)
-        
 
-def adicionar_dicionario_reserva(dic: dict):
 
-    with open("reservas.csv", "a") as arquivo:
+def adicionar_dicionario_user(dic: dict):
+
+   with open("users.csv", "a") as arquivo:
             lista: list[str] = []
-                    
+                       
             for i in dic:
-                a = dic[i]
-                
+                a = dic[i]  
+                    
                 if type(a) == str:
                     a = a.replace(',', ';')
-                    
+                        
                 lista.append(fr'"{i}:{a}"')
-                
+                    
             linha = ','.join(lista) + '\n'
-            
+                
             arquivo.write(linha)
 
 
@@ -87,13 +122,24 @@ def criar_sala (codigo, tipo, capacidade, descricao: dict):
     }
 
 
-def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim):
+def criar_reserva(codigo, sala, data_hora_inicio, data_hora_fim, user):
     return {
         "codigo": codigo,
         "sala": sala,
         "data_e_hora_de_inicio": data_hora_inicio,
         "data_e_hora_do_fim": data_hora_fim,
+        "user": user,
         "ativa": True
+    }
+
+
+def criar_user(codigo, nome, email, senha):
+    return {
+        "codigo": codigo,
+        "nome": nome,
+        "email": email,
+        "senha": senha,
+        "ativo": True
     }
 
 
@@ -109,7 +155,7 @@ def exibe_dicionario_sala():
             dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
             dic['ativa'] = dic['ativa'].lower() == 'true'
             lista_dicts.append(dic)
-            
+        
     return lista_dicts
 
 def exibe_dicionario_reserva():
@@ -126,12 +172,19 @@ def exibe_dicionario_reserva():
             lista_dicts.append(dic)
             
     return lista_dicts
+
+
+def exibe_dicionario_user():
+    lista_dicts: list[dict] = []
         
+    with open("users.csv", "r") as arquivo:
 
-def exibe_sala(id: int):
+        csv_reader = csv.reader(arquivo)
 
-    return adicionar_dicionario_sala()
-
-# def criar_sala(codigo, capacidade, ativa, tipo, descricao):
-#     sala = sala_modelo(codigo, capacidade, ativa, tipo, descricao)
-#     return sala
+        for row in csv_reader:
+            a = dividir_lista(row)
+            dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
+            dic['ativa'] = dic['ativa'].lower() == 'true'
+            lista_dicts.append(dic)
+            
+    return lista_dicts

@@ -12,7 +12,7 @@ content %}
       <form action="/cadastrar-sala" method="post">
         <div class="mb-3">
           <label for="tipo" class="form-label">Tipo</label>
-          <select class="form-select" id="tipo" name="tipo">
+          <select class="form-select" id="tipo" name="tipo" required>
             <option selected>Selecione um tipo</option>
             <option value="1">Laboratório de Informática</option>
             <option value="2">Laboratório de Química</option>
@@ -21,7 +21,14 @@ content %}
         </div>
         <div class="mb-3">
           <label for="codigo" class="form-label">Código da sala</label>
-          <input type="number" class="form-control" name="codigo" id="codigo" />
+          <input
+            type="number"
+            class="form-control"
+            name="codigo"
+            id="codigo"
+            required
+          />
+          <div style="color: red">{{erro}}</div>
         </div>
         <div class="mb-3">
           <label for="capacidade" class="form-label">Capacidade</label>
@@ -30,6 +37,7 @@ content %}
             class="form-control"
             name="capacidade"
             id="capacidade"
+            required
           />
         </div>
         <div class="mb-3">
@@ -40,6 +48,7 @@ content %}
             id="descricao"
             cols="30"
             rows="10"
+            required
           ></textarea>
         </div>
         <button type="submit" class="btn btn-dark">Cadastrar</button>
