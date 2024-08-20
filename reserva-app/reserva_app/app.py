@@ -23,21 +23,22 @@ def cadastro_post():
 
 @app.route("/cadastrar-sala")
 def cadastrar_sala():
-
-
-    return render_template("cadastrar-sala.html")
+    
+    error_message = None
+    return render_template("cadastrar-sala.html", error_message = error_message)
 
 @app.route("/cadastrar-sala", methods=['POST'])
 def cadastrar_sala_post():
     #codigo, capacidade, tipo, descricao
     codigo_limpo = int(request.form['codigo'].strip())
-    a = verificar_codigo_unico(exibe_dicionario_sala(), codigo_limpo)
-    if a == True: 
+    verifica_codigo = verificar_codigo_unico(exibe_dicionario_sala(), codigo_limpo)
+    if verifica_codigo:
+        error_message = None 
         adicionar_dicionario_sala(criar_sala(request.form['codigo'], request.form['tipo'], request.form['capacidade'], request.form['descricao']))
-    elif a == False:
-        return redirect(url_for('cadastrar_sala', erro = "Código já existe!"))
-    erro = request.args.get('erro')
-    return render_template("cadastrar-sala.html", erro=erro)
+    elif verifica_codigo == False:
+        error_message = "Código já existe!"
+        return render_template("cadastrar-sala.html", error_message=error_message)
+    return render_template("cadastrar-sala.html")
 
 
 @app.route("/reservar-sala")
@@ -67,6 +68,5 @@ def detalhe_reserva():
 
     
 
-# (codigo, capacidade, ativa, tipo, descricao)
 
 app.run()
