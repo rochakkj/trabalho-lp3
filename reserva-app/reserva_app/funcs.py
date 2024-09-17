@@ -184,7 +184,7 @@ def exibe_dicionario_user():
         for row in csv_reader:
             a = dividir_lista(row)
             dic = {chave.strip(': '): int(valor) if valor.isdigit() else valor for chave, valor in zip(a[::2], a[1::2])}
-            dic['ativa'] = dic['ativa'].lower() == 'true'
+            dic['ativo'] = dic['ativo'].lower() == 'true'
             lista_dicts.append(dic)
             
     return lista_dicts
