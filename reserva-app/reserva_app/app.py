@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from reserva_app.conexao_bd import conexao_abrir, conexao_fechar
 from reserva_app.funcs import *
 
 
@@ -65,6 +66,13 @@ def listar_salas():
 @app.route("/detalhe-reserva")
 def detalhe_reserva():
     return render_template("reserva/detalhe-reserva.html")
+
+# def usuarioInserir(con, codigo, nome, fone, email):
+#      cursor = con.cursor()
+#      sql = "INSERT INTO Usuario (Id_usuario, Nome, Email, cli_email) VALUES (%s, %s, %s, %s)"
+#      cursor.execute(sql, (codigo, nome, fone, email))
+#      con.commit() 
+#      cursor.close()
 
     
 
