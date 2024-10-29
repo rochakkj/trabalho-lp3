@@ -188,3 +188,60 @@ def exibe_dicionario_user():
             lista_dicts.append(dic)
             
     return lista_dicts
+
+
+def usuarioInserir(con, nome, email, senha):
+    cursor = con.cursor()
+    sql = f"INSERT INTO usuario (nome, email, senha, ativo, adm) VALUES (\"{nome}\", \"{email}\", \"{senha}\", True, NULL)"
+    cursor.execute(sql)
+    con.commit() 
+    cursor.close()
+
+def usuarioListar(con):
+    cursor = con.cursor(dictionary=True)
+    sql = "SELECT * FROM reserva_app.usuario;"
+    cursor.execute(sql)
+    resultado = []
+
+    for registro in cursor:
+        resultado.append(registro)
+    cursor.close()
+    return resultado
+
+def salaInserir(con, capacidade, tipo, descricao):
+    cursor = con.cursor()
+    sql = f"INSERT INTO sala (capacidade, tipo, descricao, ativo) VALUES ({capacidade}, \"{tipo}\", \"{descricao}\", True)"
+    cursor.execute(sql)
+    con.commit() 
+    cursor.close()
+    
+def salaListar(con):
+    cursor = con.cursor(dictionary=True)
+    sql = "SELECT * FROM reserva_app.sala;"
+    cursor.execute(sql)
+    resultado = []
+
+    for registro in cursor:
+        resultado.append(registro)
+    cursor.close()
+    return resultado
+
+
+def reservaInserir(con, data_hora_inicio, data_hora_fim, id_usuario, id_sala):
+    cursor = con.cursor()
+    #YYYY-MM-DD hh:mm:ss
+    sql = f"INSERT INTO reserva (data_hora_inicio, data_hora_fim, id_usuario, id_sala, ativo) VALUES (\'{data_hora_inicio}\', \'{data_hora_fim}\', {id_usuario}, {id_sala}, True)"
+    cursor.execute(sql)
+    con.commit() 
+    cursor.close()
+
+def reservaListar(con):
+    cursor = con.cursor(dictionary=True)
+    sql = "SELECT * FROM reserva_app.reserva;"
+    cursor.execute(sql)
+    resultado = []
+
+    for registro in cursor:
+        resultado.append(registro)
+    cursor.close()
+    return resultado

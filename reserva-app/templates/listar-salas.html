@@ -24,19 +24,11 @@ content %}
           <tbody>
             {% for i in salas%}
             <tr>
-              <td>{{i.codigo}}</td>
-              {% if i['tipo'] == 1 %}
-              <td>Laboratório de Informática</td>
-              {% elif i['tipo'] == 2 %}
-              <td>Laboratório de Química</td>
-              {% elif i['tipo'] == 3 %}
-              <td>Sala de Aula</td>
-              {% else %}
-              <td></td>
-              {% endif %}
-              <td>{{i.descricao}}</td>
-              <td>{{i.capacidade}}</td>
-              {% if i['ativa'] == True %}
+              <td>{{i['id_sala']}}</td>
+              <td>{{i['tipo']}}</td>
+              <td>{{i['descricao']}}</td>
+              <td>{{i['capacidade']}}</td>
+              {% if i['ativo'] == 1 %}
               <td>Ativa</td>
               {% else %}
               <td>Desativada</td>

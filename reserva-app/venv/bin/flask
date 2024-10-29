@@ -1,0 +1,8 @@
+#!/home/estudante1/Documentos/Sp3088341/trabalho-lp3/reserva-app/venv/bin/python
+# -*- coding: utf-8 -*-
+import re
+import sys
+from flask.cli import main
+if __name__ == "__main__":
+    sys.argv[0] = re.sub(r"(-script\.pyw|\.exe)?$", "", sys.argv[0])
+    sys.exit(main())

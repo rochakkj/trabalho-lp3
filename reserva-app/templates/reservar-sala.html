@@ -16,7 +16,16 @@ content %}
           <select class="form-select" id="sala" name="sala">
             <option selected>Selecione a sala</option>
             {% for i in salas%}
-            <option value="{{i.codigo}}">Sala {{i.codigo}}</option>
+            <option value="{{i['id_sala']}}">Sala {{i['id_sala']}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="sala" class="form-label">Usuario</label>
+          <select class="form-select" id="usuario" name="usuario">
+            <option selected>Selecione o usuario</option>
+            {% for i in usuarios%}
+            <option value="{{i['id_usuario']}}">Usuario {{i['nome']}}</option>
             {% endfor %}
           </select>
         </div>

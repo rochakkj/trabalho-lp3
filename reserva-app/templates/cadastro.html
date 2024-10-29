@@ -18,11 +18,11 @@
         <form class="card-text" action="/cadastro" method="post">
           <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input type="name" class="form-control" name="nome" id="nome" />
+            <input type="name" class="form-control" name="nome" id="nome" required/>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="email" class="form-control" name="email" id="email" />
+            <input type="email" class="form-control" name="email" id="email" required/>
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Senha</label>
@@ -31,6 +31,7 @@
               class="form-control"
               name="password"
               id="password"
+              required
             />
           </div>
           <div class="mb-3">

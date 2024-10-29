@@ -17,16 +17,16 @@ content %}
         {% for i in reservas %}
           <tr>
             <td>
-              {{ i.sala }}
+              {{i['id_sala']}}
             </span>
             <td>
-              {{ i.user }}
+              {{i['id_usuario']}}
             </td>
             <td>
-              {{ i.data_e_hora_de_inicio }}
+              {{i['data_hora_inicio']}}
             </td>
             <td>
-              {{ i.data_e_hora_do_fim }}
+              {{i['data_hora_fim']}}
             </td>
           </tr>
         {% endfor %}

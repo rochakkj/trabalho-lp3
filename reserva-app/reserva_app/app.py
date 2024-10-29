@@ -17,62 +17,63 @@ def cadastro():
 
 @app.route("/cadastro", methods=['POST'])
 def cadastro_post():
-
-    adicionar_dicionario_user(criar_user(gerar_codigo_unico(exibe_dicionario_user()), request.form['nome'], request.form['email'], request.form['password']))
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    usuarioInserir(con, request.form['nome'], request.form['email'], request.form['password'])
 
     return render_template("cadastro.html")
 
 @app.route("/cadastrar-sala")
 def cadastrar_sala():
     
-    error_message = None
-    return render_template("cadastrar-sala.html", error_message = error_message)
+    return render_template("cadastrar-sala.html")
 
 @app.route("/cadastrar-sala", methods=['POST'])
 def cadastrar_sala_post():
-    #codigo, capacidade, tipo, descricao
-    codigo_limpo = int(request.form['codigo'].strip())
-    verifica_codigo = verificar_codigo_unico(exibe_dicionario_sala(), codigo_limpo)
-    if verifica_codigo:
-        error_message = None 
-        adicionar_dicionario_sala(criar_sala(request.form['codigo'], request.form['tipo'], request.form['capacidade'], request.form['descricao']))
-    elif verifica_codigo == False:
-        error_message = "Código já existe!"
-        return render_template("cadastrar-sala.html", error_message=error_message)
+    
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    tipo = int(request.form['tipo'])
+    if (tipo == 1):
+        tipoString = "Laboratório de Informática"
+    elif (tipo == 2):
+        tipoString = "Laboratório de Química"
+    elif (tipo == 3):
+        tipoString = "Sala de Aula"
+    else:
+        tipoString = "Sem tipo"
+    salaInserir(con, request.form['capacidade'], tipoString, request.form['descricao'])
     return render_template("cadastrar-sala.html")
 
 
 @app.route("/reservar-sala")
 def reservar_sala():    
-
-    return render_template("reservar-sala.html", salas = exibe_dicionario_sala())
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    return render_template("reservar-sala.html", salas = salaListar(con), usuarios = usuarioListar(con))
 
 
 @app.route("/reservar-sala", methods=['POST'])
 def reservar_sala_post():
-    #codigo, sala, data_hora_inicio, data_hora_fim
-    adicionar_dicionario_reserva(criar_reserva(gerar_codigo_unico(exibe_dicionario_reserva()), request.form['sala'], request.form['inicio'], request.form['fim'], "User 1"))
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    dataI = request.form['inicio'].replace('T', ' ')
+    dataF = request.form['fim'].replace('T', ' ')
+    
+    reservaInserir(con, dataI, dataF, request.form['usuario'], request.form['sala'])
     return render_template("reservar-sala.html")
 
 
 @app.route("/reservas")
 def reservas():
-    return render_template("reservas.html", reservas = exibe_dicionario_reserva())
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    return render_template("reservas.html", reservas = reservaListar(con))
 
 @app.route("/")
 def listar_salas():
-    return render_template("listar-salas.html", salas = exibe_dicionario_sala())
+    
+    con = conexao_abrir("localhost", "estudante1", "123", "reserva_app")
+    return render_template("listar-salas.html", salas = salaListar(con))
 
 @app.route("/detalhe-reserva")
 def detalhe_reserva():
     return render_template("reserva/detalhe-reserva.html")
-
-# def usuarioInserir(con, codigo, nome, fone, email):
-#      cursor = con.cursor()
-#      sql = "INSERT INTO Usuario (Id_usuario, Nome, Email, cli_email) VALUES (%s, %s, %s, %s)"
-#      cursor.execute(sql, (codigo, nome, fone, email))
-#      con.commit() 
-#      cursor.close()
 
     
 
