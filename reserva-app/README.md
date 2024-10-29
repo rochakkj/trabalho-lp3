@@ -2,6 +2,13 @@
 
 Aplicação de exemplo para aulas sobre desenvolvimento web backend e criação de multipage applications utilizand Python e Flask.
 
+
+## Membros:
+- Davi Gomes de Sousa
+- Gabriel Martins Rocha
+- Giovanni Foliene Luciano
+- Giovanni Zorzetto Oliveira
+
 ## Usuários vs. Funcionalidades
 - Administrador
   - Login
